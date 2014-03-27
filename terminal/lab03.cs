@@ -23,7 +23,6 @@ namespace next{
 
 			double tavg = (s1.avg + s2.avg) / 2;
 
-			Console.WriteLine ("'");
 			Console.WriteLine ("'{0}' average is {1}", s1.name, s1.avg);
 			Console.WriteLine ("'{0}' average is {1}", s2.name, s2.avg);
 			Console.WriteLine ("'{0}' and '{1}' total average is {2}", s1.name, s2.name, tavg);
