@@ -12,8 +12,8 @@ namespace next
 			temp = Console.ReadLine();
 			num = Convert.ToInt32(temp);
 
-			for(int i = 1; i <= 10; i++){
-				Console.WriteLine("{0, -3} X {1, -3} = {2}", num, i, num * i);
+			for(int i = 1; i < 10; i++){
+				Console.WriteLine("{0, -3} X {1, -1} = {2}", num, i, num * i);
 			}
 		}
 	}

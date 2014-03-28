@@ -5,26 +5,26 @@ namespace next
 	{
 		public static void Main(string [] args)
 		{
+			
 			int first, end, step;
 			string temp;
 			int sum = 0;
 
-			Console.Write("press start number : ");
+			Console.Write("press start, Finish, step (x y z) : ");
 			temp = Console.ReadLine();
-			first = Convert.ToInt32(temp);
-			Console.Write("press finish number : ");
-			temp = Console.ReadLine();
-			end = Convert.ToInt32(temp);
-			Console.Write("press step number : ");
-			temp = Console.ReadLine();
-			step = Convert.ToInt32(temp);
-
+			
+			string [] num = temp.Split(' ');
+			
+			first = Convert.ToInt32(num[0]);
+			end = Convert.ToInt32(num[1]);
+			step = Convert.ToInt32(num[2]);
 
 			Console.WriteLine("numbers");
 			for(int i = first; i <= end; i += step)
 			{
-				Console.WriteLine(i);
 				sum += i;
+				Console.WriteLine(sum);
+
 			}
 
 			Console.WriteLine("sum = {0}", sum);
