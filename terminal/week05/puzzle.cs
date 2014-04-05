@@ -6,7 +6,9 @@ class puzzle
 	{
 		for(int i = 0; i < row; i++)
 		{
-			Console.WriteLine("----------------");
+			for(int j = 0; j < col * 5 + 1; j++)
+				Console.Write("-");
+			Console.WriteLine();
 			for(int j = 0; j < col; j++)
 			{
 				if(arr[i, j] == 0)
@@ -16,7 +18,9 @@ class puzzle
 			}
 			Console.WriteLine("|");
 		}
-		Console.WriteLine("----------------");
+		for(int j = 0; j < col * 5 + 1; j++)
+			Console.Write("-");
+		Console.WriteLine();
 	}
 
 	public static int ReadInt()
@@ -25,7 +29,7 @@ class puzzle
 		return Convert.ToInt32(temp);
 	}
 
-	public static void Move(ref int[, ] arr, int size, ref bool flagq)
+	public static void Move(ref int[, ] arr, int size, ref bool flagq, ref string msg)
 	{
 		//입력을 받고 움직일 수 있는지 판단
 		//움직일 수 없는 블럭 선택시 메세지
@@ -34,13 +38,15 @@ class puzzle
 		int blockx = 0, blocky = 0, zerox = 0, zeroy = 0;
 		if(mblock == 777) 		//종료
 		{
+			msg = "bye";
 			flagq = true;
 			return; 
 		}
 
 		if(1 > mblock || Math.Pow(size, 2) < mblock)		//정상 입력범위 벗어남
 		{
-			Console.WriteLine("Inout out of range!!");
+			msg = "Input out of range!!";
+			//Console.WriteLine("Inout out of range!!");
 			return;
 		}
 		//블럭을 찾아라!
@@ -117,13 +123,18 @@ class puzzle
 			}
 
 		}else{
-			Console.WriteLine("Can not move!!");
+			msg = "Can not move!!";
+			//Console.WriteLine("Can not move!!");
 		}
 	}
 
 	public static void Main(string [] args)
 	{
-		int[, ] arr = new int [3, 3];
+		Console.Write("press puzzle size : ");
+		int psize = ReadInt();
+
+
+		int[, ] arr = new int [psize, psize];
 		int num = 0;
 		bool flagq = false;
 		
@@ -136,11 +147,20 @@ class puzzle
 			}
 		}
 
+		string msg = "";
+		Console.Clear();
 		ArrPrint(arr, arr.GetLength(0), arr.GetLength(1));
+		
 		while(flagq == false)
 		{
-			Move(ref arr, arr.GetLength(0), ref flagq);
+			Move(ref arr, arr.GetLength(0), ref flagq, ref msg);
+			Console.Clear();
 			ArrPrint(arr, arr.GetLength(0), arr.GetLength(1));
+			if(msg != "")
+			{
+				Console.WriteLine(msg);
+				msg = "";
+			}
 		}
 		
 		//Console.WriteLine(arr.GetLength(0));
