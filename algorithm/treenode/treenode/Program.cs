@@ -101,8 +101,8 @@ namespace treenode
         {
             Student s = SearchStudent(id);
 
-            int rightId = 0;
-            int leftId = 0;
+            int leftCnt = 0;
+            int rightCnt = 0;
 
             if ((s.right == null) || (s.left == null))      //Leaf Node
             {
@@ -117,41 +117,131 @@ namespace treenode
             }
             else
             {
-                if ((s.DepthSearch(ref leftId, 0, s.right, true)) >= (s.DepthSearch(ref rightId, 0, s.left, false)))
+                int leftId = s.DepthSearch(ref leftCnt, s.left, false);
+                int rightId = s.DepthSearch(ref rightCnt, s.right, true);
+                if (leftCnt >= rightCnt)
                 {
                     Student t = SearchStudent(leftId);
-                    s.name = t.name;s
-                    s.pic
+                    t.parent.left = null;
+                    //SwapNode(s, t);
+                    s.id = t.id;
+                    s.name = t.name;
+                    s.picture = t.picture;
+                    //t.parent.left = null;
+
+
+                }
+                else
+                {
+                    Student t = SearchStudent(rightId);
+                    t.parent.right = null;
+                    s.name = t.name;
+                    s.picture = t.picture;
+                    t.parent.right = null;
                 }
                 //가장 깊은 곳을 찾고
                 //가장 깊은 곳의 가장 왼쪽꺼와 치환 후
                 //치환된 리프 노드를 버림
             }
         }
-        public int DepthSearch(ref int id, int cnt, Student s, bool leftsw)
+        public int DepthSearch(ref int cnt, Student s, bool leftsw)
         {
             if(leftsw == true)
             {
                 if (s.left == null)
-                    return cnt;
+                    return s.id;
                 else
                 {
                     cnt++;
-                    s.DepthSearch(0, cnt, s.left, true);
+                    s.id = s.DepthSearch(ref cnt, s.left, true);
                 }
                     
             }
             else
             {
                 if (s.right == null)
-                    return cnt;
+                    return s.id;
                 else
                 {
                     cnt++;
-                    s.DepthSearch(cnt, s.right, false);
+                    s.id = s.DepthSearch(ref cnt, s.right, false);
                 }
             }
-            return -1;
+            return s.id;
+        }
+        public void SwapNode(Student a, Student b)
+        {
+            Student tempLeft, tempRight, tempParent;
+            if (a.parent != null)
+                if (a.parent.id > a.id)
+                    a.parent.left = b;
+                else
+                    a.parent.right = b;
+
+            if(a.left == b)
+            {
+                tempLeft = a.left;
+                tempRight = a.right;
+                tempParent = a.parent;
+                a.left = b.left;
+                a.right = b.right;
+                a.parent = b;           //
+                b.left = a;             //
+                b.right = tempRight;
+                b.parent = tempParent;
+            }
+            else if (a.right == b)
+            {
+                tempLeft = a.left;
+                tempRight = a.right;
+                tempParent = a.parent;
+                a.left = b.left;
+                a.right = b.right;
+                a.parent = b;           //
+                b.left = a.left;             //
+                b.right = a;
+                b.parent = tempParent;
+            }
+            else if (b.left == a)
+            {
+                tempLeft = b.left;
+                tempRight = b.right;
+                tempParent = b.parent;  
+                b.left = a.left;
+                b.right = a.right;
+                b.parent = a;           //
+                a.left = b;             //
+                a.right = tempRight;
+                a.parent = tempParent;
+            }
+            else if (b.right == a)
+            {
+                tempLeft = b.left;
+                tempRight = b.right;
+                tempParent = b.parent;  
+                b.left = a.left;
+                b.right = a.right;
+                b.parent = a;           //
+                a.left = tempLeft;             //
+                a.right = b;
+                a.parent = tempParent;
+            }
+            else
+            {
+                tempLeft = a.left;
+                tempRight = a.right;
+                tempParent = a.parent;
+
+                
+                
+
+                a.left = b.left;
+                a.right = b.right;
+                a.parent = b.parent;
+                b.left = tempLeft;
+                b.right = tempRight;
+                b.parent = tempParent;
+            }
         }
     }
 
@@ -169,7 +259,7 @@ namespace treenode
             s.Insert(new Student(1243, "lee", "lee.jpg"));
             s.Insert(new Student(13, "lee", "lee.jpg"));
 
-            s.Delete(7);
+            s.Delete(10);
 
             //s.SearchStudent(14).PrintSubtree(0);
             //Random r = new Random();
