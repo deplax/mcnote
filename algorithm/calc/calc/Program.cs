@@ -26,7 +26,7 @@ namespace calc
 	}
 	public OpNode Pop()
 	{
-	        if (top > 0)
+	        if (top > -1)
 	        {
 		top--;
 		return op[top + 1];
@@ -53,7 +53,7 @@ namespace calc
 	}
 	public ValNode Pop()
 	{
-	        if (top > 0)
+	        if (top > -1)
 		top--;
 	        return val[top + 1];
 	}
@@ -130,7 +130,7 @@ namespace calc
         }
         class Program
         {
-	static void MakeTree(String input)
+	static OpNode MakeTree(String input)
 	{
 	        OpStack opStack = new OpStack();
 	        ValStack valStack = new ValStack();
@@ -146,17 +146,34 @@ namespace calc
 		else
 		{
 		        OpNode op = new OpNode(Convert.ToChar(c[i]));
-		        if (valStack.Pop() == null)
+		        ValNode[] a = new ValNode[2];
+		        int cnt = 0;
+		        for (int j = 0; j < 2; j++ )
+			if (valStack.Pop() != null)
+			{
+			        
+			        a[j] = valStack.Pop();
+			        cnt++;
+			}
+		        if(cnt == 1)
 		        {
-			ValNode a;
-			a = valStack.Pop();
+			op.right = a[0];
+			op.left = opStack.Pop();
 		        }
+		        else if(cnt == 2)
+		        {
+			op.right = a[0];
+			op.left = a[1];
+		        }
+		        opStack.Push(op);
 		}
 
 		//연산자를 만나면 모두 POP해줘요.
 		//POP이 하나밖에 없으면 연산자를 끌어와요
 		//정리되면 연산자를 스텍에 PUSH해요
 	        }
+
+	        return opStack.Pop();
 	}
 	
 	static void Main(string[] args)
@@ -167,10 +184,8 @@ namespace calc
 	        ValNode b = new ValNode(2);
 	        OpNode c = new OpNode('+');
 
-	        
-
-	        MakeTree("4 2 +");
-
+	        OpNode test = MakeTree("4 2 +");
+	        Console.WriteLine("{0}", test.cal());
 	       //alStack.Push(a);
 	        //valStack.Push(b);
 	        //opStack.Push(c);
