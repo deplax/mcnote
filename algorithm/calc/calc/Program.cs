@@ -27,8 +27,15 @@ namespace calc
 	public OpNode Pop()
 	{
 	        if (top > 0)
+	        {
 		top--;
-	        return op[top + 1];
+		return op[top + 1];
+	        }
+	        else
+	        {
+		return null;
+	        }
+	        
 	}
         }
         class ValStack : Stack
@@ -125,13 +132,36 @@ namespace calc
         {
 	static void MakeTree(String input)
 	{
+	        OpStack opStack = new OpStack();
+	        ValStack valStack = new ValStack();
 
+	        string[] c = input.Split(' ');
+	        for(int i = 0; i < c.Length; i++)
+	        {
+		if(char.IsNumber(Convert.ToChar(c[i])))
+		{
+		        ValNode val = new ValNode(Convert.ToDouble(c[i]));
+		        valStack.Push(val);
+		}
+		else
+		{
+		        OpNode op = new OpNode(Convert.ToChar(c[i]));
+		        if (valStack.Pop() == null)
+		        {
+			ValNode a;
+			a = valStack.Pop();
+		        }
+		}
+
+		//연산자를 만나면 모두 POP해줘요.
+		//POP이 하나밖에 없으면 연산자를 끌어와요
+		//정리되면 연산자를 스텍에 PUSH해요
+	        }
 	}
 	
 	static void Main(string[] args)
 	{
-	        OpStack opStack = new OpStack();
-	        ValStack valStack = new ValStack();
+	        
 
 	        ValNode a = new ValNode(4);
 	        ValNode b = new ValNode(2);
@@ -139,11 +169,11 @@ namespace calc
 
 	        
 
-	        MakeTree("4, 2, +");
+	        MakeTree("4 2 +");
 
-	        valStack.Push(a);
-	        valStack.Push(b);
-	        opStack.Push(c);
+	       //alStack.Push(a);
+	        //valStack.Push(b);
+	        //opStack.Push(c);
 
 	        //OpNode mul = new OpNode('*');
 	        //mul.left = new ValNode(3);
